@@ -1,0 +1,34 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+SELECT (COUNT(DISTINCT ?s) AS ?num) WHERE {  GRAPH ?g { ?s a dcat:Dataset. } }
+
+######################################################################################################################
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+SELECT DISTINCT ?s WHERE { GRAPH ?g { ?s a dcat:Dataset. } } OFFSET 0 LIMIT 10
+######################################################################################################################
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dct: <http://purl.org/dc/terms/>
+select ?license ?num from <http://projekt-opal.de> WHERE { { select ?license (COUNT(?license) AS ?num) WHERE { ?s a dcat:Dataset. ?s dcat:distribution ?dist. ?dist dct:license ?license. }  group by ?license } UNION { select ?license (COUNT(?license) AS ?num) WHERE { ?s a dcat:Dataset. ?s dct:license ?license. }  group by ?license } } ORDER BY DESC(?num) LIMIT 10
+######################################################################################################################
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dct: <http://purl.org/dc/terms/>
+select (COUNT(?s) AS ?num) from <http://projekt-opal.de>
+WHERE { ?s a dcat:Dataset. FILTER(EXISTS{?s dcat:theme <http://publications.europa.eu/resource/authority/data-theme/AGRI>.}) }
+
+######################################################################################################################
+
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dct: <http://purl.org/dc/terms/>
+select (COUNT(?s) AS ?num) from <http://projekt-opal.de> WHERE { ?s a dcat:Dataset. FILTER(EXISTS{?s dcat:theme <http://publications.europa.eu/resource/authority/data-theme/EDUC>.}) }
+
+######################################################################################################################
+
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+SELECT  (COUNT(distinct ?s) AS ?num)
+WHERE
+{ GRAPH ?g {?s  a                     dcat:Dataset ;
+        ?p                    ?o
+    FILTER isLiteral(?o)
+    FILTER contains(?o, "Paderborn")
+  }
+}
